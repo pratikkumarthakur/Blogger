@@ -32,6 +32,7 @@ const page = ({ params }) => {
             <Image
               src={assets.logo}
               width={280}
+              height={280}
               alt=""
               className="w-[230px] sm:w-auto"
               priority
@@ -44,7 +45,7 @@ const page = ({ params }) => {
 
         <div className="text-center my-24 ">
           <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto ">
-            {" "}
+            yaha kam krrna hai abhi
             {data.title}
           </h1>
 
@@ -61,7 +62,7 @@ const page = ({ params }) => {
           {data.authorImg && (
             <Image
               className="mx-auto mt-6 border border-white rounded-full"
-              src={data.authorImg}
+              src={data.authorImg || "img.png"}
               width={60}
               height={60}
               alt=""
@@ -76,15 +77,17 @@ const page = ({ params }) => {
       <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
         <Image
           className="border-4 border-white"
-          src={data.image}
+          src={data.image || "/img.png"}
           width={1280}
           height={720}
           alt=""
+          priority
         />
 
-       <div className="blog-content" dangerouslySetInnerHTML={{__html:data.description}}>
-
-       </div>
+        <div
+          className="blog-content"
+          dangerouslySetInnerHTML={{ __html: data.description }}
+        ></div>
 
         <div className="my-24">
           <p className="text-black font- font-semibold my-4">
