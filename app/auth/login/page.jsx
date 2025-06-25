@@ -11,8 +11,9 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Hardcoded single user credentials
-    if (username === "admin" && password === "password123") {
+
+    if (username === "admin" && password === "mypassword123") {
+      localStorage.setItem("auth", "true");
       router.push("/admin");
     } else {
       setError("Invalid credentials");
@@ -28,7 +29,7 @@ export default function LoginPage() {
           <input
             type="text"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -37,12 +38,14 @@ export default function LoginPage() {
           <input
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         {error && <div style={{ color: "red", marginTop: 10 }}>{error}</div>}
-        <button type="submit" style={{ marginTop: 20 }}>Login</button>
+        <button type="submit" style={{ marginTop: 20 }}>
+          Login
+        </button>
       </form>
     </div>
   );
