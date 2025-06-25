@@ -2,6 +2,7 @@
 // import { assets, blog_data } from "@/Assests/assets";
 // import Footer from "@/Components/Footer";
 // import axios from "axios";
+
 // import Image from "next/image";
 // import Link from "next/link";
 // import React, { useEffect, useState } from "react";
@@ -140,10 +141,9 @@ const page = ({ params }) => {
           <Link href="/">
             <Image
               src={assets.logo}
-              width={120}
-              height={40}
-              alt="Logo"
-              className="w-[140px] sm:w-auto drop-shadow-lg"
+              width={280}
+              alt=""
+              className="w-[230px] sm:w-auto"
               priority
             />
           </Link>
@@ -152,17 +152,18 @@ const page = ({ params }) => {
           </button>
         </div>
 
-        <div className="text-center my-20">
-          <h1 className="text-3xl sm:text-5xl font-bold max-w-[700px] mx-auto text-gray-900 leading-tight drop-shadow">
+        <div className="text-center my-24 ">
+          <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto ">
+            {" "}
             {data.title}
           </h1>
           {data.authorImg && (
             <Image
-              className="mx-auto mt-6 border-4 border-white rounded-full shadow-lg"
+              className="mx-auto mt-6 border border-white rounded-full"
               src={data.authorImg}
-              width={70}
-              height={70}
-              alt={data.author}
+              width={60}
+              height={60}
+              alt=""
             />
           )}
           <p className="mt-2 pb-2 text-lg text-gray-700 font-medium max-w-[740px] mx-auto">
@@ -170,20 +171,18 @@ const page = ({ params }) => {
           </p>
         </div>
       </div>
-      <div className="mx-4 max-w-3xl md:mx-auto mt-[-80px] mb-16">
-        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-10 relative z-10">
-          <Image
-            className="border-4 border-white rounded-xl shadow-lg mx-auto"
-            src={data.image}
-            width={700}
-            height={400}
-            alt={data.title}
-          />
+      <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
+        <Image
+          className="border-4 border-white"
+          src={data.image}
+          width={1280}
+          height={720}
+          alt=""
+        />
 
-          <div
-            className="blog-content prose prose-lg max-w-none mt-8 text-gray-800"
-            dangerouslySetInnerHTML={{ __html: data.description }}
-          />
+       <div className="blog-content" dangerouslySetInnerHTML={{__html:data.description}}>
+
+       </div>
 
           <div className="my-16">
             <p className="text-gray-800 font-semibold mb-4 text-lg">
