@@ -197,6 +197,7 @@ const BlogList = () => {
                   title={item.title}
                   description={item.description}
                   category={item.category}
+                  
                 />
               );
             })}

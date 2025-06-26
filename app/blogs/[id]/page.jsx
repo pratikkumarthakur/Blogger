@@ -115,8 +115,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
+
+
+
 const page = ({ params }) => {
   const [data, setData] = useState(null);
+  
   const resolvedParams = React.use(params); // Unwrap the params Promise
 
   const fetchBlogData = async () => {
@@ -133,6 +137,14 @@ const page = ({ params }) => {
     fetchBlogData();
     // eslint-disable-next-line
   }, [resolvedParams?.id]);
+  
+
+ const handleScroll = () => {
+  window.scrollTo({
+    top: window.innerHeight / 2,
+    behavior: "smooth",
+  });
+};
 
   return data ? (
     <>
@@ -147,7 +159,7 @@ const page = ({ params }) => {
               priority
             />
           </Link>
-          <button className="flex items-center gap-2 font-semibold py-2 px-5 rounded-lg border border-black bg-white shadow-md hover:bg-black hover:text-white transition">
+          <button onClick={handleScroll} className="flex items-center gap-2 font-semibold py-2 px-5 rounded-lg border border-black bg-white shadow-md hover:bg-black hover:text-white transition ">
             Get Started <Image src={assets.arrow} alt="Arrow" />
           </button>
         </div>
@@ -216,7 +228,7 @@ const page = ({ params }) => {
             </div>
           </div>
         </div>
-      </div>
+      
       <Footer />
     </>
   ) : (
