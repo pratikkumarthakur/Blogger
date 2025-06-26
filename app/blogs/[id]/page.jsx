@@ -50,9 +50,9 @@
 //           </h1>
 
 //           {/* FIX THE ERROR */}
-//           {/* 
+//           {/*
 //           <Image
-         
+
 //             className="mx-auto mt-6 border border-white rounded-full"
 //             src={data.authorImg}
 //             width={60}
@@ -115,12 +115,9 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-
-
-
 const page = ({ params }) => {
   const [data, setData] = useState(null);
-  
+
   const resolvedParams = React.use(params); // Unwrap the params Promise
 
   const fetchBlogData = async () => {
@@ -137,14 +134,13 @@ const page = ({ params }) => {
     fetchBlogData();
     // eslint-disable-next-line
   }, [resolvedParams?.id]);
-  
 
- const handleScroll = () => {
-  window.scrollTo({
-    top: window.innerHeight / 2,
-    behavior: "smooth",
-  });
-};
+  const handleScroll = () => {
+    window.scrollTo({
+      top: window.innerHeight / 2,
+      behavior: "smooth",
+    });
+  };
 
   return data ? (
     <>
@@ -159,7 +155,10 @@ const page = ({ params }) => {
               priority
             />
           </Link>
-          <button onClick={handleScroll} className="flex items-center gap-2 font-semibold py-2 px-5 rounded-lg border border-black bg-white shadow-md hover:bg-black hover:text-white transition ">
+          <button
+            onClick={handleScroll}
+            className="flex items-center gap-2 font-semibold py-2 px-5 rounded-lg border border-black bg-white shadow-md hover:bg-black hover:text-white transition "
+          >
             Get Started <Image src={assets.arrow} alt="Arrow" />
           </button>
         </div>
@@ -192,43 +191,44 @@ const page = ({ params }) => {
           alt=""
         />
 
-       <div className="blog-content" dangerouslySetInnerHTML={{__html:data.description}}>
+        <div
+          className="blog-content"
+          dangerouslySetInnerHTML={{ __html: data.description }}
+        ></div>
 
-       </div>
-
-          <div className="my-16">
-            <p className="text-gray-800 font-semibold mb-4 text-lg">
-              Share this article on Social Media
-            </p>
-            <div className="flex gap-6">
-              <a href="#" aria-label="Share on Facebook">
-                <Image
-                  src={assets.facebook_icon}
-                  width={50}
-                  alt="Facebook"
-                  className="hover:scale-110 transition-transform duration-200"
-                />
-              </a>
-              <a href="#" aria-label="Share on Twitter">
-                <Image
-                  src={assets.twitter_icon}
-                  width={50}
-                  alt="Twitter"
-                  className="hover:scale-110 transition-transform duration-200"
-                />
-              </a>
-              <a href="#" aria-label="Share on Google Plus">
-                <Image
-                  src={assets.googleplus_icon}
-                  width={50}
-                  alt="Google Plus"
-                  className="hover:scale-110 transition-transform duration-200"
-                />
-              </a>
-            </div>
+        <div className="my-16">
+          <p className="text-gray-800 font-semibold mb-4 text-lg">
+            Share this article on Social Media
+          </p>
+          <div className="flex gap-6">
+            <a href="#" aria-label="Share on Facebook">
+              <Image
+                src={assets.facebook_icon}
+                width={50}
+                alt="Facebook"
+                className="hover:scale-110 transition-transform duration-200"
+              />
+            </a>
+            <a href="#" aria-label="Share on Twitter">
+              <Image
+                src={assets.twitter_icon}
+                width={50}
+                alt="Twitter"
+                className="hover:scale-110 transition-transform duration-200"
+              />
+            </a>
+            <a href="#" aria-label="Share on Google Plus">
+              <Image
+                src={assets.googleplus_icon}
+                width={50}
+                alt="Google Plus"
+                className="hover:scale-110 transition-transform duration-200"
+              />
+            </a>
           </div>
         </div>
-      
+      </div>
+
       <Footer />
     </>
   ) : (
