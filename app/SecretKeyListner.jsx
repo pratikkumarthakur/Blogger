@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Header from "../Components/Header"; // Assuming you have a Headers component
 
 const SecretKeyListener = () => {
   const router = useRouter();
@@ -9,7 +10,7 @@ const SecretKeyListener = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "a") {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "k") {
         setShowPrompt(true);
       }
     };
@@ -22,7 +23,7 @@ const SecretKeyListener = () => {
     if (secretCode === "letmein123") {
       setShowPrompt(false);
 
-      router.push("/admin");
+      router.push("/auth/login");
     } else {
       alert("Wrong secret code 😅");
     }
@@ -31,7 +32,7 @@ const SecretKeyListener = () => {
   return (
     <>
       {showPrompt && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50">
+        <div className="h-screen fixed inset-0 w-full bg-white bg-opacity-90 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-xl font-bold mb-4">Enter Secret Code</h2>
             <input
