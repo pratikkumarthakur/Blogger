@@ -72,31 +72,31 @@ function Header() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("sexual-health")}
+                onClick={() => scrollToSection("Technology & Development")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
-                Sexual Health
+                Technology & Development
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("mens-performance")}
+                onClick={() => scrollToSection("Lifestyle & Wellness")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
-                Men's Performance
+                Lifestyle & Wellness
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("womens-vitality")}
+                onClick={() => scrollToSection("Travel & Culinary Adventures")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
-                Women's Vitality
+                Travel & Culinary Adventures
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("art-of-intimacy")}
+                onClick={() => scrollToSection("Business & Career Growth")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
-                Art of Intimacy
+                Business & Career Growth
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
             </nav>
