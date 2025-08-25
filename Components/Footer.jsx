@@ -1,264 +1,225 @@
-// import { assets } from '@/Assests/assets'
-// import Image from 'next/image'
-// import React from 'react'
-
-// const Footer = () => {
-//   return (
-//     <div className='flex justify-around flex-col gap-2 sm:gap-0 sm:flex-row bg-black py-5 items-center'>
-// <Image src={assets.logo_light} alt='' width={120}  />
-// <p className='text-sm text-white'>All right reserved. Copyright @blogger</p>
-// <div className='flex'>
-// <Image src={assets.facebook_icon} alt='' width={40} />
-// <Image src={assets.twitter_icon} alt='' width={40} />
-// <Image src={assets.googleplus_icon} alt='' width={40} />
-// </div>
-//     </div>
-//   )
-// }
-
-// export default Footer
-
-import { assets } from "@/Assests/assets";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import {
+  X,
+  Shield,
+  Users,
+  BookOpen,
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+} from "lucide-react";
 
 const Footer = () => {
+  const [activeModal, setActiveModal] = useState(null);
+
+  const openModal = (modalType) => {
+    setActiveModal(modalType);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
+
+  const Modal = ({ isOpen, onClose, title, children }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="flex justify-between items-center p-6 border-b">
+            <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+          <div className="p-6">{children}</div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <footer className="bg-black text-white">
-      {/* Main Footer Content */}
-      <div className="px-5 md:px-12 lg:px-28 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Section */}
-          <div className="md:col-span-1">
-            <Image
-              src={assets.logo}
-              width={120}
-              height={120}
-              alt="Wellness Hub"
-              className="w-[100px] sm:w-[120px]"
-            />
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Your trusted partner in health, wellness, and intimate care.
-              Professional, discreet, and personalized solutions for better
-              living.
-            </p>
-            <div className="flex gap-3">
-              <Image
-                src={assets.facebook_icon}
-                alt="Facebook"
-                width={32}
-                className="hover:opacity-80 cursor-pointer"
-              />
-              <Image
-                src={assets.twitter_icon}
-                alt="Twitter"
-                width={32}
-                className="hover:opacity-80 cursor-pointer"
-              />
-              <Image
-                src={assets.googleplus_icon}
-                alt="Google Plus"
-                width={32}
-                className="hover:opacity-80 cursor-pointer"
-              />
+    <>
+      <footer className="bg-black text-white">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">GH</span>
+                </div>
+                <span className="text-xl font-bold">GoodHealth</span>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Your trusted companion for holistic wellness and everyday
+                health. Supporting you with reliable tools and insights to
+                thrive.
+              </p>
+              <div className="flex space-x-4">
+                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer">
+                  <span className="text-xs">f</span>
+                </div>
+                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer">
+                  <span className="text-xs">t</span>
+                </div>
+                <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer">
+                  <span className="text-xs">in</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Wellness Topics</h3>
+              <ul className="space-y-2">
+                <li>
+                  <button
+                    onClick={() => openModal("fitness")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Fitness and Exercise
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModal("mindfulness")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Mental Well-being
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModal("nutrition")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Nutrition & Diet
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModal("lifestyle")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Healthy Lifestyle
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Company</h3>
+              <ul className="space-y-2">
+                <li>
+                  <button
+                    onClick={() => openModal("about")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    About Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModal("careers")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Careers
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModal("contact")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Contact Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModal("guidelines")}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Community Guidelines
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Get in Touch</h3>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-gray-400 text-sm">
+                  <Phone size={16} />
+                  <span>+91-9876543210</span>
+                </div>
+                <div className="flex items-center space-x-3 text-gray-400 text-sm">
+                  <Mail size={16} />
+                  <span>support@goodhealth.com</span>
+                </div>
+                <div className="flex items-center space-x-3 text-gray-400 text-sm">
+                  <Clock size={16} />
+                  <span>Mon - Sat: 9 AM - 6 PM</span>
+                </div>
+                <div className="flex items-center space-x-3 text-gray-400 text-sm">
+                  <MapPin size={16} />
+                  <span>India • Global Services</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Health Categories */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Health Topics</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/sexual-health"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Sexual Health
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/mens-performance"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Men's Performance
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/womens-vitality"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Women's Vitality
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/art-of-intimacy"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Art of Intimacy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/wellness-tips"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Wellness Tips
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Our Services</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/weight-management"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Weight Management
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/performance-enhancement"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Performance Enhancement
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/hair-restoration"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Hair Restoration
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/daily-wellness"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Daily Wellness
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/consultation"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Online Consultation
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Support & Legal */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Support</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
+          <div className="border-t border-gray-800 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <div className="text-gray-400 text-sm">
+                © 2025 GoodHealth. All rights reserved.
+              </div>
+              <div className="flex space-x-6 text-sm">
+                <button
+                  onClick={() => openModal("terms")}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Terms of Service
-                </Link>
-              </li>
-            </ul>
+                </button>
+                <button
+                  onClick={() => openModal("privacy")}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+      </footer>
 
-        {/* Trust Indicators */}
-        <div className="border-t border-gray-800 mt-8 pt-8">
-          <div className="flex flex-wrap justify-center gap-8 text-xs text-gray-500 mb-6">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              FDA-Approved Treatments
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              Licensed Healthcare Providers
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              HIPAA Compliant
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              256-bit SSL Encryption
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Example Modal Usage */}
+      <Modal
+        isOpen={activeModal === "nutrition"}
+        onClose={closeModal}
+        title="Nutrition & Diet"
+      >
+        <p className="text-gray-700">
+          Discover healthy and sustainable eating habits, recipes, and tips to
+          boost your energy and immunity naturally.
+        </p>
+      </Modal>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800 py-4 px-5 md:px-12 lg:px-28">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-400">
-            © 2024 Wellness Hub. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-xs text-gray-500">
-            <Link
-              href="/medical-disclaimer"
-              className="hover:text-white transition-colors"
-            >
-              Medical Disclaimer
-            </Link>
-            <Link
-              href="/shipping-info"
-              className="hover:text-white transition-colors"
-            >
-              Shipping Info
-            </Link>
-            <Link
-              href="/returns"
-              className="hover:text-white transition-colors"
-            >
-              Returns
-            </Link>
-          </div>
-        </div>
-      </div>
-    </footer>
+      <Modal
+        isOpen={activeModal === "mindfulness"}
+        onClose={closeModal}
+        title="Mental Well-being"
+      >
+        <p className="text-gray-700">
+          Explore simple practices to enhance your focus, manage stress, and
+          maintain emotional balance in daily life.
+        </p>
+      </Modal>
+
+      {/* Add more modals similarly for terms, privacy, etc. */}
+    </>
   );
 };
 
