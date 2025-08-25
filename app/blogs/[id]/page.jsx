@@ -71,6 +71,8 @@ const page = ({ params }) => {
         readingTimeType: typeof data.readingTime,
         views: data.views,
         viewsType: typeof data.views,
+        tags: data.tags,
+        tagsType: typeof data.tags,
         allKeys: Object.keys(data),
         fullData: data,
       });
@@ -186,76 +188,64 @@ const page = ({ params }) => {
 
   return (
     <>
-      {/* Header Section */}
-      <div className="bg-gray-200 py-5 px-5 md:px-12 lg:px-28">
+      {/* Header Section - Made smaller */}
+      <div className="bg-gray-200 px-5 md:px-12 lg:px-28">
         <div className="flex justify-between items-center">
           <Link href="/">
             <Image
-              src={assets.logo}
-              width={280}
-              height={280}
+              src={assets.logo} // ensure this is imported or in /public
+              width={100}
+              height={100}
               alt="Logo"
-              className="w-[230px] sm:w-auto"
+              className="w-[100px] sm:w-[100px] mt-[15px]" // fixed invalid Tailwind
               priority
             />
           </Link>
+
           <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000] hover:shadow-[-5px_5px_0px_#000000] transition-all">
             Get Started
             <Image src={assets.arrow} width={16} height={16} alt="Arrow" />
           </button>
         </div>
 
-        <div className="text-center my-24">
-          <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto leading-tight">
-            {data.title || "Blog Title"}
+        <div className="text-center my-16">
+          <h1 className="text-2xl sm:text-4xl font-semibold max-w-[700px] mx-auto leading-tight">
+            {data?.title || "Blog Title"}
           </h1>
 
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-gray-600">
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-gray-600 mb-10">
             <p className="text-lg">
               By{" "}
-              <span className="font-medium text-gray-800">
-                {data.author || "Unknown Author"}
+              <span className="font-medium text-gray-800 ">
+                {data?.author || "Unknown Author"}
               </span>
             </p>
 
-            {data.createdAt && (
-              <>
+            {data?.createdAt && (
+              <div className="flex items-center gap-2 text-sm">
                 <span className="hidden sm:inline">•</span>
-                <p className="text-sm">
+                <span>
                   {new Date(data.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
                   })}
-                </p>
+                </span>
+              </div>
+            )}
+
+            {data?.readingTime && (
+              <>
+                <span className="hidden sm:inline">•</span>
+                <p className="text-sm">{data.readingTime} min read</p>
               </>
             )}
 
-            {/* Reading Time - Check multiple possible field names */}
-            {(data.readingTime || data.reading_time || data.readTime) && (
+            {data?.views !== undefined && data?.views !== null && (
               <>
                 <span className="hidden sm:inline">•</span>
                 <p className="text-sm">
-                  {data.readingTime || data.reading_time || data.readTime} min
-                  read
-                </p>
-              </>
-            )}
-
-            {/* Views - Check multiple possible field names and handle 0 views */}
-            {((data.views !== undefined && data.views !== null) ||
-              (data.viewCount !== undefined && data.viewCount !== null) ||
-              (data.view_count !== undefined && data.view_count !== null)) && (
-              <>
-                <span className="hidden sm:inline">•</span>
-                <p className="text-sm">
-                  {(() => {
-                    const viewsCount =
-                      data.views ?? data.viewCount ?? data.view_count ?? 0;
-                    return `${viewsCount} ${
-                      viewsCount === 1 ? "view" : "views"
-                    }`;
-                  })()}
+                  {data.views} {data.views === 1 ? "view" : "views"}
                 </p>
               </>
             )}
@@ -264,15 +254,15 @@ const page = ({ params }) => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
+      <div className="mx-5 max-w-[600px] md:mx-auto mt-[80px] mb-10">
         {/* Featured Image */}
         {data.image && !imageError ? (
           <div className="relative">
             <Image
-              className="border-4 border-white rounded-lg shadow-lg w-full"
+              className="border-4 border-white rounded-full shadow-lg w-[50%] mx-auto"
               src={data.image}
-              width={1280}
-              height={720}
+              width={500}
+              height={500}
               alt={data.title || "Blog image"}
               priority
               onError={handleImageError}
@@ -332,16 +322,14 @@ const page = ({ params }) => {
                 Tags:
               </h3>
               <div className="flex flex-wrap gap-2">
-                {data.tags
-                  .filter((tag) => tag && tag.trim())
-                  .map((tag, index) => (
-                    <span
-                      key={`tag-${index}`}
-                      className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-colors cursor-pointer"
-                    >
-                      #{tag.trim()}
-                    </span>
-                  ))}
+                {data.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
               </div>
             </div>
           )}
