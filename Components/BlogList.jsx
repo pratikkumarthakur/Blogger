@@ -8,19 +8,23 @@ import Link from "next/link";
 const BlogList = () => {
   const [menu, setMenu] = useState("All");
   const [blogs, setBlogs] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({});
 
   const fetchBlogs = async () => {
-    const response = await axios.get("/api/blog");
-    setBlogs(response.data.blogs);
-    console.log(response.data.blogs);
+    try {
+      const response = await axios.get("/api/blog");
+      setBlogs(response.data.blogs);
+      console.log(response.data.blogs);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
   };
 
   useEffect(() => {
     fetchBlogs();
   }, []);
 
-<<<<<<< HEAD
-=======
   // Modal content data
   const modalData = {
     "web-development": {
@@ -239,7 +243,6 @@ const BlogList = () => {
     setModalContent({});
   };
 
->>>>>>> mobile
   const categories = [
     { id: "All", label: "All Topics" },
     { id: "Technology", label: "Technology" },
@@ -252,10 +255,6 @@ const BlogList = () => {
 
   return (
     <div className="py-12 px-5 md:px-12 lg:px-28">
-<<<<<<< HEAD
-      {/* Sexual Health Section */}
-      <section id="sexual-health" className="mb-20">
-=======
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
@@ -297,7 +296,6 @@ const BlogList = () => {
 
       {/* Technology Section */}
       <section id="technology" className="mb-20">
->>>>>>> mobile
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-6 text-gray-800">
             Technology & Development
@@ -315,17 +313,6 @@ const BlogList = () => {
               Web Development
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Effective solutions for erectile dysfunction with personalized
-              treatment plans. FDA-approved medications and expert
-              consultations.
-            </p>
-            <Link href="/treatments/ed-treatment">
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Master modern web technologies with comprehensive tutorials and
               guides.
             </p>
@@ -335,7 +322,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 border border-purple-200">
@@ -343,16 +329,6 @@ const BlogList = () => {
               Digital Marketing
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Clinically proven treatments to improve control and satisfaction.
-              Topical solutions and expert behavioral guidance.
-            </p>
-            <Link href="/treatments/premature-ejaculation">
-              <button className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Grow your online presence with proven digital marketing
               strategies.
             </p>
@@ -362,7 +338,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-2xl p-8 border border-teal-200">
@@ -370,16 +345,6 @@ const BlogList = () => {
               Productivity Tools
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Comprehensive approach to overall sexual health and wellbeing.
-              Holistic solutions for long-term satisfaction.
-            </p>
-            <Link href="/treatments/sexual-wellness">
-              <button className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Optimize your workflow with advanced productivity systems and
               tools.
             </p>
@@ -389,7 +354,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
         </div>
       </section>
@@ -415,16 +379,6 @@ const BlogList = () => {
               </span>
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Advanced formulations to enhance stamina and performance
-              naturally. Natural boosters and confidence coaching included.
-            </p>
-            <Link href="/treatments/performance-enhancement">
-              <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Achieve your health goals with personalized fitness and nutrition
               plans.
             </p>
@@ -434,7 +388,6 @@ const BlogList = () => {
             >
               Get Started →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 border border-orange-200">
@@ -442,16 +395,6 @@ const BlogList = () => {
               Financial Planning
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Natural support for healthy testosterone levels and energy.
-              Comprehensive hormone testing and lifestyle coaching.
-            </p>
-            <Link href="/treatments/testosterone-support">
-              <button className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Build wealth and secure your financial future with expert
               guidance.
             </p>
@@ -461,7 +404,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 border border-green-200">
@@ -469,16 +411,6 @@ const BlogList = () => {
               Creative Design
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Comprehensive wellness solutions for sustained energy and
-              vitality. Energy assessment and metabolic support included.
-            </p>
-            <Link href="/treatments/vitality-energy">
-              <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Unleash your creativity with professional design courses and
               tools.
             </p>
@@ -488,7 +420,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
         </div>
       </section>
@@ -511,16 +442,6 @@ const BlogList = () => {
               Travel Planning
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Support for natural hormonal balance and menstrual health.
-              Comprehensive hormone testing and natural supplements.
-            </p>
-            <Link href="/treatments/hormonal-balance">
-              <button className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Plan perfect trips with destination guides and travel resources.
             </p>
             <button
@@ -529,7 +450,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-2xl p-8 border border-violet-200">
@@ -537,16 +457,6 @@ const BlogList = () => {
               Cooking & Recipes
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Comprehensive solutions for intimate comfort and confidence. pH
-              balance support and expert guidance included.
-            </p>
-            <Link href="/treatments/intimate-wellness">
-              <button className="bg-violet-600 text-white px-6 py-3 rounded-lg hover:bg-violet-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Master culinary skills with thousands of tested recipes and
               techniques.
             </p>
@@ -556,7 +466,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-2xl p-8 border border-indigo-200">
@@ -564,16 +473,6 @@ const BlogList = () => {
               Online Learning
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Natural fertility support and reproductive health solutions.
-              Preconception care and ovulation support included.
-            </p>
-            <Link href="/treatments/fertility-support">
-              <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Expand your knowledge with courses from world-class instructors.
             </p>
             <button
@@ -582,7 +481,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
         </div>
       </section>
@@ -605,16 +503,6 @@ const BlogList = () => {
               Business Growth
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Professional guidance for stronger, more intimate relationships.
-              Couple's assessment and communication tools included.
-            </p>
-            <Link href="/treatments/relationship-wellness">
-              <button className="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Scale your business with proven strategies and expert guidance.
             </p>
             <button
@@ -623,7 +511,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-8 border border-emerald-200">
@@ -631,16 +518,6 @@ const BlogList = () => {
               Mindfulness & Wellness
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Learn effective communication techniques for intimate
-              conversations. Active listening and vulnerability skills training.
-            </p>
-            <Link href="/treatments/communication-skills">
-              <button className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Find balance and peace with comprehensive wellness programs.
             </p>
             <button
@@ -649,7 +526,6 @@ const BlogList = () => {
             >
               Learn More →
             </button>
->>>>>>> mobile
           </div>
 
           <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl p-8 border border-cyan-200">
@@ -657,16 +533,6 @@ const BlogList = () => {
               Content Creation
             </h3>
             <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-              Comprehensive daily wellness program for better intimacy. Morning
-              routines and mindfulness exercises included.
-            </p>
-            <Link href="/treatments/daily-rise">
-              <button className="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition-colors font-medium">
-                Read Full Article →
-              </button>
-            </Link>
-=======
               Build your content empire with professional creation tools and
               strategies.
             </p>
@@ -676,151 +542,11 @@ const BlogList = () => {
             >
               Get Started →
             </button>
->>>>>>> mobile
           </div>
         </div>
       </section>
 
-      {/* Category Filter */}
-      {/* <div className="mb-12">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Explore Our Content Categories
-        </h2>
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setMenu(category.id)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                menu === category.id
-                  ? "bg-black text-white shadow-lg"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div>
-      </div> */}
-
-      {/* Featured Solutions Section */}
-      {/* <div className="grid md:grid-cols-2 gap-8 mb-16"> */}
-      {/* Learning Platform Card */}
-      {/* <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200">
-          <h3 className="text-2xl font-bold mb-4 text-gray-800">
-            Master New Skills Online
-          </h3>
-          <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-            Clinically proven weight management solutions with personalized
-            treatment plans and expert medical supervision.
-          </p>
-          <Link href="/treatments/weight-management">
-            <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
-              Read Full Article →
-            </button>
-          </Link>
-        </div>
-=======
-            Access thousands of courses and learn from industry experts at your
-            own pace.
-          </p>
-          <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
-            Start Learning →
-          </button>
-        </div> */}
->>>>>>> mobile
-
-      {/* Creative Tools Card */}
-      {/* <div className="bg-gradient-to-br from-red-50 to-pink-100 rounded-2xl p-8 border border-red-200">
-          <h3 className="text-2xl font-bold mb-4 text-gray-800">
-            Creative Design Suite
-            <span className="text-sm bg-red-500 text-white px-2 py-1 rounded-full ml-2">
-              Most Popular
-            </span>
-          </h3>
-          <p className="text-gray-600 mb-6">
-<<<<<<< HEAD
-            Boost confidence and performance with our expert-recommended
-            solutions and comprehensive enhancement programs.
-=======
-            Professional design tools and resources for creators and
-            entrepreneurs.
->>>>>>> mobile
-          </p>
-          <Link href="/treatments/enhanced-performance">
-            <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
-              Read Full Article →
-            </button>
-          </Link>
-        </div>
-      </div> */}
-
-      {/* Additional Resource Options */}
-      {/* <div className="grid md:grid-cols-3 gap-6 mb-16">
-        <div className="bg-purple-50 rounded-xl p-6 border border-purple-200">
-          <h4 className="font-semibold mb-2 text-gray-800">
-            Premium Productivity Suite
-          </h4>
-          <p className="text-sm text-gray-600 mb-4">
-<<<<<<< HEAD
-            Advanced weight management therapy with personalized dosing and
-            medical support.
-=======
-            Advanced tools for maximum efficiency
->>>>>>> mobile
-          </p>
-          <Link href="/treatments/zepbound-therapy">
-            <button className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              Read Full Article →
-            </button>
-          </Link>
-        </div>
-
-        <div className="bg-orange-50 rounded-xl p-6 border border-orange-200">
-          <h4 className="font-semibold mb-2 text-gray-800">
-            Build Your Personal Brand
-          </h4>
-          <p className="text-sm text-gray-600 mb-4">
-<<<<<<< HEAD
-            Comprehensive relationship wellness program with daily practices and
-            expert guidance.
-=======
-            Stand out with a strong digital presence and storytelling.
->>>>>>> mobile
-          </p>
-          <Link href="/treatments/daily-rise-intimacy">
-            <button className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              Read Full Article →
-            </button>
-          </Link>
-        </div>
-
-        <div className="bg-teal-50 rounded-xl p-6 border border-teal-200">
-          <h4 className="font-semibold mb-2 text-gray-800">
-            Community & Collaboration
-          </h4>
-          <p className="text-sm text-gray-600 mb-4">
-<<<<<<< HEAD
-            Hair restoration and wellness solutions with proven results and
-            expert care.
-          </p>
-          <Link href="/treatments/hair-restoration">
-            <button className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              Read Full Article →
-            </button>
-          </Link>
-=======
-            Connect and grow with like-minded professionals.
-          </p>
-          <button className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-            Join Now →
-          </button>
->>>>>>> mobile
-        </div>
-      </div> */}
-
-      {/* Dynamic Blog Items Section (if needed) */}
+      {/* Dynamic Blog Items Section */}
       <div className="mt-12">
         <h2 className="text-3xl font-bold text-center mb-8">
           Latest Blog Posts
