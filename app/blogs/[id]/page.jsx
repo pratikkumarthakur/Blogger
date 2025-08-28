@@ -396,7 +396,8 @@ const page = ({ params }) => {
                 </span>
               </div>
             )}
-            {data?.readingTime && (
+            {/* Fixed reading time display */}
+            {data?.readingTime && data.readingTime > 0 && (
               <>
                 <span className="hidden sm:inline text-purple-400">•</span>
                 <p className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -404,11 +405,13 @@ const page = ({ params }) => {
                 </p>
               </>
             )}
+            {/* Fixed views display */}
             {data?.views !== undefined && data?.views !== null && (
               <>
                 <span className="hidden sm:inline text-purple-400">•</span>
                 <p className="text-sm font-medium">
-                  {data.views} {data.views === 1 ? "view" : "views"}
+                  {data.views.toLocaleString()}{" "}
+                  {data.views === 1 ? "view" : "views"}
                 </p>
               </>
             )}
@@ -429,8 +432,7 @@ const page = ({ params }) => {
                     Latest Articles
                   </h2>
                 </div>
-                // Replace the sidebar section in your page component // Replace
-                the sidebar section in your page component
+
                 {latestArticlesLoading ? (
                   <div className="space-y-4">
                     {[...Array(6)].map((_, index) => (
@@ -628,7 +630,7 @@ const page = ({ params }) => {
                 </div>
               )}
 
-              {/* Tags */}
+              {/* Fixed Tags Section */}
               {data.tags &&
                 Array.isArray(data.tags) &&
                 data.tags.length > 0 && (
@@ -642,7 +644,7 @@ const page = ({ params }) => {
                           key={index}
                           className="bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-sm hover:shadow-md"
                         >
-                          #{tag}
+                          #{typeof tag === "string" ? tag.trim() : tag}
                         </span>
                       ))}
                     </div>
