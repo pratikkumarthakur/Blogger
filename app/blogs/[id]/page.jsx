@@ -186,10 +186,18 @@ const page = ({ params }) => {
     );
   }
 
+  // cliclk handler for get started button
+  const handleClick = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       {/* Header Section - Made smaller */}
-      <div className="bg-gray-200 px-5 md:px-12 lg:px-28">
+      <div className="bg-gradient-to-b from-white to-blue-400 px-5 md:px-12 lg:px-28">
         <div className="flex justify-between items-center">
           <Link href="/">
             <Image
@@ -202,7 +210,10 @@ const page = ({ params }) => {
             />
           </Link>
 
-          <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000] hover:shadow-[-5px_5px_0px_#000000] transition-all">
+          <button
+            className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000] hover:shadow-[-5px_5px_0px_#000000] transition-all"
+            onClick={() => handleClick("section2")}
+          >
             Get Started
             <Image src={assets.arrow} width={16} height={16} alt="Arrow" />
           </button>
@@ -213,8 +224,8 @@ const page = ({ params }) => {
             {data?.title || "Blog Title"}
           </h1>
 
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-gray-600 mb-10">
-            <p className="text-lg">
+          <div className="mt-4  flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-gray-600 mb-8">
+            <p className="text-lg mb-5">
               By{" "}
               <span className="font-medium text-gray-800 ">
                 {data?.author || "Unknown Author"}
@@ -254,12 +265,12 @@ const page = ({ params }) => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-5 max-w-[600px] md:mx-auto mt-[80px] mb-10">
+      <div className="mx-5  md:mx-auto mt-[-80px] mb-10 w-[70%]">
         {/* Featured Image */}
         {data.image && !imageError ? (
           <div className="relative">
             <Image
-              className="border-4 border-white rounded-full shadow-lg w-[50%] mx-auto"
+              className="border-4 border-white rounded-br-lg shadow-lg w-[40%] mx-auto"
               src={data.image}
               width={500}
               height={500}
@@ -293,7 +304,10 @@ const page = ({ params }) => {
         )}
 
         {/* Article Content */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-100 p-8">
+        <div
+          id="section2"
+          className="mt-8 bg-blue-50 rounded-lg shadow-sm border border-gray-100 p-8 w-full mx-auto"
+        >
           {data.category && (
             <div className="mb-6">
               <span className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium uppercase tracking-wide">
@@ -304,7 +318,7 @@ const page = ({ params }) => {
 
           {data.description ? (
             <div
-              className="blog-content prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
+              className="blog-content prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700 "
               dangerouslySetInnerHTML={{ __html: data.description }}
             />
           ) : (
@@ -354,7 +368,16 @@ const page = ({ params }) => {
                 width={50}
                 height={50}
                 alt="Share on Facebook"
-                className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                className="
+    rounded-xl
+    shadow-md
+    ring-2 ring-blue-200
+    hover:ring-blue-400
+    hover:shadow-xl
+    bg-gradient-to-tr from-blue-50 to-blue-200
+    hover:from-blue-100 hover:to-blue-300
+    transition-all duration-300 ease-in-out
+  "
               />
             </a>
             <a
@@ -372,7 +395,17 @@ const page = ({ params }) => {
                 width={50}
                 height={50}
                 alt="Share on Twitter"
-                className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                className="
+    rounded-xl
+    shadow-md
+    ring-2 ring-sky-200
+    hover:ring-sky-400
+    hover:shadow-xl
+    bg-gradient-to-tr from-white to-sky-200
+    hover:from-sky-100 hover:to-sky-300
+    transition-all duration-300 ease-in-out
+    hover:scale-105
+  "
               />
             </a>
             <a
@@ -388,7 +421,17 @@ const page = ({ params }) => {
                 width={50}
                 height={50}
                 alt="Share on LinkedIn"
-                className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                className="
+    rounded-xl
+    shadow-md
+    ring-2 ring-blue-300
+    hover:ring-blue-500
+    hover:shadow-xl
+    bg-gradient-to-tr from-white to-blue-300
+    hover:from-blue-100 hover:to-blue-400
+    transition-all duration-300 ease-in-out
+    hover:scale-105
+  "
               />
             </a>
           </div>
