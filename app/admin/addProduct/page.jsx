@@ -25,7 +25,7 @@ const page = () => {
     title: "",
     description: "",
     category: "Sexual Health",
-    author: "Dr. Sarah Johnson",
+    author: "ADMIN",
     authorImg: "/health_expert.png",
   });
 
@@ -95,7 +95,7 @@ const page = () => {
           title: "",
           description: "",
           category: "Sexual Health",
-          author: "Dr. Sarah Johnson",
+          author: "ADMIN",
           authorImg: "/health_expert.png",
         });
 
