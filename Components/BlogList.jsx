@@ -8,6 +8,7 @@ import Link from "next/link";
 const BlogList = ({ title, description, category, image, id }) => {
   const [menu, setMenu] = useState("All");
   const [blogs, setBlogs] = useState([]);
+  const [sortOrder, setSortOrder] = useState("latest"); // New state for sorting
 
   const fetchBlogs = async () => {
     const response = await axios.get("/api/blog");
@@ -25,11 +26,34 @@ const BlogList = ({ title, description, category, image, id }) => {
     { id: "Men's Performance", label: "Men's Performance" },
     { id: "Women's Vitality", label: "Women's Vitality" },
     { id: "Art of Intimacy", label: "Art of Intimacy" },
+    { id: "Mental Health", label: "Mental Health" },
+    { id: "General Wellness", label: "General Wellness" },
   ];
 
   // Function to get blogs by category
   const getBlogsByCategory = (category) => {
     return blogs.filter((blog) => blog.category === category);
+  };
+
+  // Function to sort blogs based on date
+  const sortBlogs = (blogsToSort) => {
+    const sortedBlogs = [...blogsToSort];
+
+    if (sortOrder === "latest") {
+      // Sort by newest first (assuming createdAt or date field exists)
+      return sortedBlogs.sort((a, b) => {
+        const dateA = new Date(a.createdAt || a.date || a._id);
+        const dateB = new Date(b.createdAt || b.date || b._id);
+        return dateB - dateA;
+      });
+    } else {
+      // Sort by oldest first
+      return sortedBlogs.sort((a, b) => {
+        const dateA = new Date(a.createdAt || a.date || a._id);
+        const dateB = new Date(b.createdAt || b.date || b._id);
+        return dateA - dateB;
+      });
+    }
   };
 
   // Function to render blog section with navigation
@@ -85,6 +109,14 @@ const BlogList = ({ title, description, category, image, id }) => {
         </div>
       </section>
     );
+  };
+
+  // Get filtered and sorted blogs for the all articles section
+  const getFilteredAndSortedBlogs = () => {
+    const filteredBlogs = blogs.filter((item) =>
+      menu === "All" ? true : item.category === menu
+    );
+    return sortBlogs(filteredBlogs);
   };
 
   return (
@@ -146,34 +178,62 @@ const BlogList = ({ title, description, category, image, id }) => {
 
       {/* All Blog Articles Grid - Filtered View */}
       <div>
-        <h2 id="mid" className="text-3xl font-bold text-center mb-8">
-          {menu === "All" ? "All Health Articles" : `${menu} Articles`}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogs
-            .filter((item) => (menu === "All" ? true : item.category === menu))
-            .map((item, index) => {
-              return (
-                // Remove the Link wrapper here too and let Blogitem handle its own linking
-                <div
-                  key={index}
-                  className="cursor-pointer hover:shadow-lg transition-shadow rounded-xl"
-                >
-                  <Blogitem
-                    id={item._id}
-                    image={item.image}
-                    title={item.title}
-                    description={item.description}
-                    category={item.category}
-                  />
-                </div>
-              );
-            })}
+        {/* Header with Sort Options */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+          <h2 id="mid" className="text-3xl font-bold mb-4 md:mb-0">
+            {menu === "All" ? "All Health Articles" : `${menu} Articles`}
+          </h2>
+
+          {/* Sort Options */}
+          <div className="flex items-center gap-2">
+            <span className="text-gray-600 font-medium">Sort by:</span>
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setSortOrder("latest")}
+                className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                  sortOrder === "latest"
+                    ? "bg-white text-gray-800 shadow-sm"
+                    : "text-gray-600 hover:text-gray-800"
+                }`}
+              >
+                Latest
+              </button>
+              <button
+                onClick={() => setSortOrder("oldest")}
+                className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                  sortOrder === "oldest"
+                    ? "bg-white text-gray-800 shadow-sm"
+                    : "text-gray-600 hover:text-gray-800"
+                }`}
+              >
+                Oldest
+              </button>
+            </div>
+          </div>
         </div>
 
-        {blogs.filter((item) =>
-          menu === "All" ? true : item.category === menu
-        ).length === 0 && (
+        {/* Blog Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {getFilteredAndSortedBlogs().map((item, index) => {
+            return (
+              // Remove the Link wrapper here too and let Blogitem handle its own linking
+              <div
+                key={index}
+                className="cursor-pointer hover:shadow-lg transition-shadow rounded-xl"
+              >
+                <Blogitem
+                  id={item._id}
+                  image={item.image}
+                  title={item.title}
+                  description={item.description}
+                  category={item.category}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {getFilteredAndSortedBlogs().length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
               No articles found in this category yet.

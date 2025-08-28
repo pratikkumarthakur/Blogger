@@ -81,112 +81,208 @@ const page = ({ params }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto"></div>
-          <p className="mt-4 text-lg text-gray-600">Loading article...</p>
+      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-10 opacity-50">
+            <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+            <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+          </div>
         </div>
+
+        <div className="relative z-10 flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-20 w-20 border-4 border-gradient-to-r from-purple-400 via-pink-500 to-red-500 border-t-transparent mx-auto"></div>
+              <div className="absolute inset-0 animate-ping rounded-full h-20 w-20 border-2 border-purple-300 opacity-20"></div>
+            </div>
+            <p className="mt-6 text-xl font-medium bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Loading your story...
+            </p>
+            <div className="mt-4 w-64 h-1 bg-gray-200 rounded-full mx-auto overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes blob {
+            0% {
+              transform: translate(0px, 0px) scale(1);
+            }
+            33% {
+              transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+              transform: translate(-20px, 20px) scale(0.9);
+            }
+            100% {
+              transform: translate(0px, 0px) scale(1);
+            }
+          }
+          .animate-blob {
+            animation: blob 7s infinite;
+          }
+          .animation-delay-2000 {
+            animation-delay: 2s;
+          }
+          .animation-delay-4000 {
+            animation-delay: 4s;
+          }
+        `}</style>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md mx-auto p-6">
-          <div className="mb-4">
-            <svg
-              className="mx-auto h-16 w-16 text-red-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-red-50 via-white to-pink-50">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-10 opacity-30">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-200 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl animate-float-delayed"></div>
           </div>
-          <h1 className="text-2xl font-bold text-red-600 mb-4">
-            Oops! Something went wrong
-          </h1>
-          <p className="text-lg text-gray-600 mb-6">{error}</p>
-          <Link
-            href="/"
-            className="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            <svg
-              className="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to Home
-          </Link>
         </div>
+
+        <div className="relative z-10 flex items-center justify-center min-h-screen">
+          <div className="text-center max-w-md mx-auto p-8 backdrop-blur-sm bg-white/80 rounded-2xl shadow-2xl border border-white/20">
+            <div className="mb-6">
+              <div className="mx-auto h-20 w-20 bg-gradient-to-br from-red-400 to-pink-500 rounded-full flex items-center justify-center">
+                <svg
+                  className="h-10 w-10 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-4">
+              Oops! Something went wrong
+            </h1>
+            <p className="text-lg text-gray-600 mb-8">{error}</p>
+            <Link
+              href="/"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white font-medium rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              Back to Home
+            </Link>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes float {
+            0%,
+            100% {
+              transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+              transform: translateY(-20px) rotate(180deg);
+            }
+          }
+          @keyframes float-delayed {
+            0%,
+            100% {
+              transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+              transform: translateY(-30px) rotate(-180deg);
+            }
+          }
+          .animate-float {
+            animation: float 6s ease-in-out infinite;
+          }
+          .animate-float-delayed {
+            animation: float-delayed 8s ease-in-out infinite;
+          }
+        `}</style>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md mx-auto p-6">
-          <div className="mb-4">
-            <svg
-              className="mx-auto h-16 w-16 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
+      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-10 opacity-30">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gray-200 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Article not found
-          </h1>
-          <p className="text-gray-600 mb-6">
-            The article you're looking for doesn't exist or has been removed.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            <svg
-              className="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        </div>
+
+        <div className="relative z-10 flex items-center justify-center min-h-screen">
+          <div className="text-center max-w-md mx-auto p-8 backdrop-blur-sm bg-white/80 rounded-2xl shadow-2xl border border-white/20">
+            <div className="mb-6">
+              <div className="mx-auto h-20 w-20 bg-gradient-to-br from-gray-400 to-blue-500 rounded-full flex items-center justify-center">
+                <svg
+                  className="h-10 w-10 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-700 to-blue-600 bg-clip-text text-transparent mb-4">
+              Article not found
+            </h1>
+            <p className="text-gray-600 mb-8">
+              The article you're looking for doesn't exist or has been removed.
+            </p>
+            <Link
+              href="/"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-600 to-blue-600 text-white font-medium rounded-xl hover:from-gray-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to Home
-          </Link>
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              Back to Home
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
-  // cliclk handler for get started button
+  // Click handler for get started button
   const handleClick = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -195,47 +291,75 @@ const page = ({ params }) => {
   };
 
   return (
-    <>
-      {/* Header Section - Made smaller */}
-      <div className="bg-gradient-to-b from-white to-blue-400 px-5 md:px-12 lg:px-28">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Main Animated Background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50"></div>
+        <div className="absolute -inset-10 opacity-30">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+          <div className="absolute top-3/4 right-1/3 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
+        </div>
+
+        {/* Floating particles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-float-particle"></div>
+          <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-pink-400 rounded-full animate-float-particle animation-delay-1000"></div>
+          <div className="absolute bottom-1/3 left-1/2 w-2 h-2 bg-blue-400 rounded-full animate-float-particle animation-delay-3000"></div>
+          <div className="absolute top-1/6 right-1/2 w-1 h-1 bg-yellow-400 rounded-full animate-float-particle animation-delay-5000"></div>
+        </div>
+      </div>
+
+      {/* Header Section */}
+      <div className="relative z-10 backdrop-blur-sm bg-gradient-to-b from-white/80 to-transparent px-5 md:px-12 lg:px-28">
         <div className="flex justify-between items-center">
-          <Link href="/">
+          <Link
+            href="/"
+            className="transform hover:scale-105 transition-transform duration-300"
+          >
             <Image
-              src={assets.logo} // ensure this is imported or in /public
+              src={assets.logo}
               width={100}
               height={100}
               alt="Logo"
-              className="w-[100px] sm:w-[100px] mt-[15px]" // fixed invalid Tailwind
+              className="w-[100px] sm:w-[100px] mt-[15px] drop-shadow-lg"
               priority
             />
           </Link>
 
           <button
-            className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000] hover:shadow-[-5px_5px_0px_#000000] transition-all"
+            className="group flex items-center gap-2 font-medium py-3 px-6 bg-white/90 backdrop-blur-sm border-2 border-black/20 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white hover:border-transparent"
             onClick={() => handleClick("section2")}
           >
             Get Started
-            <Image src={assets.arrow} width={16} height={16} alt="Arrow" />
+            <Image
+              src={assets.arrow}
+              width={16}
+              height={16}
+              alt="Arrow"
+              className="group-hover:translate-x-1 transition-transform duration-300"
+            />
           </button>
         </div>
 
-        <div className="text-center my-16">
-          <h1 className="text-2xl sm:text-4xl font-semibold max-w-[700px] mx-auto leading-tight">
+        <div className="text-center my-20">
+          <h1 className="text-3xl sm:text-5xl font-bold max-w-[800px] mx-auto leading-tight mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
             {data?.title || "Blog Title"}
           </h1>
 
-          <div className="mt-4  flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-gray-600 mb-8">
-            <p className="text-lg mb-5">
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-gray-600 backdrop-blur-sm bg-white/60 rounded-2xl p-6 max-w-2xl mx-auto shadow-lg border border-white/20">
+            <p className="text-lg font-medium">
               By{" "}
-              <span className="font-medium text-gray-800 ">
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-semibold">
                 {data?.author || "Unknown Author"}
               </span>
             </p>
 
             {data?.createdAt && (
               <div className="flex items-center gap-2 text-sm">
-                <span className="hidden sm:inline">•</span>
-                <span>
+                <span className="hidden sm:inline text-purple-400">•</span>
+                <span className="font-medium">
                   {new Date(data.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -247,15 +371,17 @@ const page = ({ params }) => {
 
             {data?.readingTime && (
               <>
-                <span className="hidden sm:inline">•</span>
-                <p className="text-sm">{data.readingTime} min read</p>
+                <span className="hidden sm:inline text-purple-400">•</span>
+                <p className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  {data.readingTime} min read
+                </p>
               </>
             )}
 
             {data?.views !== undefined && data?.views !== null && (
               <>
-                <span className="hidden sm:inline">•</span>
-                <p className="text-sm">
+                <span className="hidden sm:inline text-purple-400">•</span>
+                <p className="text-sm font-medium">
                   {data.views} {data.views === 1 ? "view" : "views"}
                 </p>
               </>
@@ -265,40 +391,43 @@ const page = ({ params }) => {
       </div>
 
       {/* Main Content */}
-      <div className="mx-5  md:mx-auto mt-[-80px] mb-10 w-[70%]">
+      <div className="relative z-10 mx-5 md:mx-auto mt-[-80px] mb-10 max-w-4xl">
         {/* Featured Image */}
         {data.image && !imageError ? (
-          <div className="relative">
+          <div className="relative mb-12">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-3xl blur-xl opacity-30 scale-105"></div>
             <Image
-              className="border-4 border-white rounded-br-lg shadow-lg w-[40%] mx-auto"
+              className="relative border-8 border-white/50 backdrop-blur-sm rounded-3xl shadow-2xl w-full max-w-2xl mx-auto block transform hover:scale-[1.02] transition-transform duration-500"
               src={data.image}
-              width={500}
+              width={800}
               height={500}
               alt={data.title || "Blog image"}
               priority
               onError={handleImageError}
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", aspectRatio: "16/10" }}
             />
           </div>
         ) : (
-          // Fallback image placeholder
-          <div
-            className="border-4 border-white bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg shadow-lg flex items-center justify-center"
-            style={{ width: "100%", height: "400px" }}
-          >
-            <div className="text-center text-gray-500">
-              <svg
-                className="mx-auto h-16 w-16 mb-4"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <p className="text-sm">Image not available</p>
+          <div className="relative mb-12">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-300 to-blue-300 rounded-3xl blur-xl opacity-30 scale-105"></div>
+            <div
+              className="relative border-8 border-white/50 backdrop-blur-sm bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center w-full max-w-2xl mx-auto"
+              style={{ aspectRatio: "16/10", minHeight: "400px" }}
+            >
+              <div className="text-center text-gray-500">
+                <svg
+                  className="mx-auto h-20 w-20 mb-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <p className="text-lg font-medium">Image not available</p>
+              </div>
             </div>
           </div>
         )}
@@ -306,11 +435,11 @@ const page = ({ params }) => {
         {/* Article Content */}
         <div
           id="section2"
-          className="mt-8 bg-blue-50 rounded-lg shadow-sm border border-gray-100 p-8 w-full mx-auto"
+          className="backdrop-blur-sm bg-white/80 rounded-3xl shadow-2xl border border-white/20 p-8 md:p-12 mb-12"
         >
           {data.category && (
-            <div className="mb-6">
-              <span className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium uppercase tracking-wide">
+            <div className="mb-8">
+              <span className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full text-sm font-bold uppercase tracking-wide shadow-lg transform hover:scale-105 transition-transform duration-300">
                 {data.category}
               </span>
             </div>
@@ -318,12 +447,12 @@ const page = ({ params }) => {
 
           {data.description ? (
             <div
-              className="blog-content prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700 "
+              className="blog-content prose prose-xl max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-700 prose-p:leading-relaxed prose-p:text-lg prose-a:text-purple-600 prose-a:font-semibold prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700 prose-blockquote:border-purple-500 prose-blockquote:bg-purple-50 prose-blockquote:rounded-r-lg prose-blockquote:shadow-sm"
               dangerouslySetInnerHTML={{ __html: data.description }}
             />
           ) : (
-            <div className="blog-content prose prose-lg max-w-none">
-              <p className="text-gray-500 italic text-center py-8">
+            <div className="blog-content prose prose-xl max-w-none">
+              <p className="text-gray-500 italic text-center py-12 text-xl">
                 No content available for this article.
               </p>
             </div>
@@ -331,15 +460,15 @@ const page = ({ params }) => {
 
           {/* Tags */}
           {data.tags && Array.isArray(data.tags) && data.tags.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <h3 className="text-lg font-bold text-gray-700 mb-4 uppercase tracking-wide">
                 Tags:
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {data.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-colors cursor-pointer"
+                    className="bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-sm hover:shadow-md"
                   >
                     #{tag}
                   </span>
@@ -350,34 +479,25 @@ const page = ({ params }) => {
         </div>
 
         {/* Social Share */}
-        <div className="my-16 text-center">
-          <p className="text-black font-semibold mb-6 text-lg">
-            Share this article
+        <div className="text-center backdrop-blur-sm bg-white/60 rounded-3xl p-8 shadow-xl border border-white/20">
+          <p className="text-gray-800 font-bold mb-8 text-xl">
+            Share this amazing story
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-6 mb-6">
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                 typeof window !== "undefined" ? window.location.href : ""
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="cursor-pointer hover:scale-110 transition-transform block"
+              className="cursor-pointer transform hover:scale-110 transition-all duration-300 block group"
             >
               <Image
                 src={assets.facebook_icon}
-                width={50}
-                height={50}
+                width={60}
+                height={60}
                 alt="Share on Facebook"
-                className="
-    rounded-xl
-    shadow-md
-    ring-2 ring-blue-200
-    hover:ring-blue-400
-    hover:shadow-xl
-    bg-gradient-to-tr from-blue-50 to-blue-200
-    hover:from-blue-100 hover:to-blue-300
-    transition-all duration-300 ease-in-out
-  "
+                className="rounded-2xl shadow-lg ring-4 ring-blue-200 group-hover:ring-blue-400 group-hover:shadow-2xl bg-gradient-to-tr from-blue-50 to-blue-200 group-hover:from-blue-100 group-hover:to-blue-300 transition-all duration-300"
               />
             </a>
             <a
@@ -388,24 +508,14 @@ const page = ({ params }) => {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="cursor-pointer hover:scale-110 transition-transform block"
+              className="cursor-pointer transform hover:scale-110 transition-all duration-300 block group"
             >
               <Image
                 src={assets.twitter_icon}
-                width={50}
-                height={50}
+                width={60}
+                height={60}
                 alt="Share on Twitter"
-                className="
-    rounded-xl
-    shadow-md
-    ring-2 ring-sky-200
-    hover:ring-sky-400
-    hover:shadow-xl
-    bg-gradient-to-tr from-white to-sky-200
-    hover:from-sky-100 hover:to-sky-300
-    transition-all duration-300 ease-in-out
-    hover:scale-105
-  "
+                className="rounded-2xl shadow-lg ring-4 ring-sky-200 group-hover:ring-sky-400 group-hover:shadow-2xl bg-gradient-to-tr from-white to-sky-200 group-hover:from-sky-100 group-hover:to-sky-300 transition-all duration-300"
               />
             </a>
             <a
@@ -414,41 +524,44 @@ const page = ({ params }) => {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="cursor-pointer hover:scale-110 transition-transform block"
+              className="cursor-pointer transform hover:scale-110 transition-all duration-300 block group"
             >
               <Image
                 src={assets.googleplus_icon}
-                width={50}
-                height={50}
+                width={60}
+                height={60}
                 alt="Share on LinkedIn"
-                className="
-    rounded-xl
-    shadow-md
-    ring-2 ring-blue-300
-    hover:ring-blue-500
-    hover:shadow-xl
-    bg-gradient-to-tr from-white to-blue-300
-    hover:from-blue-100 hover:to-blue-400
-    transition-all duration-300 ease-in-out
-    hover:scale-105
-  "
+                className="rounded-2xl shadow-lg ring-4 ring-blue-300 group-hover:ring-blue-500 group-hover:shadow-2xl bg-gradient-to-tr from-white to-blue-300 group-hover:from-blue-100 group-hover:to-blue-400 transition-all duration-300"
               />
             </a>
           </div>
 
           {/* Copy URL Button */}
-          <div className="mt-6">
+          <div className="mt-8">
             <button
               onClick={() => {
                 if (typeof window !== "undefined") {
                   navigator.clipboard.writeText(window.location.href);
-                  alert("Article URL copied to clipboard!");
+                  // Enhanced notification
+                  const button = event.target.closest("button");
+                  const originalText = button.innerHTML;
+                  button.innerHTML = `
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Copied!
+                  `;
+                  button.classList.add("bg-green-500", "text-white");
+                  setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove("bg-green-500", "text-white");
+                  }, 2000);
                 }
               }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl transition-all duration-300 text-base font-semibold transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <svg
-                className="w-4 h-4"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -467,7 +580,80 @@ const page = ({ params }) => {
       </div>
 
       <Footer />
-    </>
+
+      {/* Custom Animations */}
+      <style jsx>{`
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1) rotate(0deg);
+          }
+          25% {
+            transform: translate(30px, -50px) scale(1.1) rotate(90deg);
+          }
+          50% {
+            transform: translate(-20px, 20px) scale(0.9) rotate(180deg);
+          }
+          75% {
+            transform: translate(-40px, -20px) scale(1.05) rotate(270deg);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1) rotate(360deg);
+          }
+        }
+
+        @keyframes float-particle {
+          0%,
+          100% {
+            transform: translateY(0px) translateX(0px) scale(1);
+            opacity: 0.7;
+          }
+          25% {
+            transform: translateY(-20px) translateX(10px) scale(1.2);
+            opacity: 1;
+          }
+          50% {
+            transform: translateY(-40px) translateX(-10px) scale(0.8);
+            opacity: 0.5;
+          }
+          75% {
+            transform: translateY(-20px) translateX(15px) scale(1.1);
+            opacity: 0.9;
+          }
+        }
+
+        .animate-blob {
+          animation: blob 12s infinite;
+        }
+
+        .animate-float-particle {
+          animation: float-particle 8s ease-in-out infinite;
+        }
+
+        .animation-delay-1000 {
+          animation-delay: 1s;
+        }
+
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+
+        .animation-delay-3000 {
+          animation-delay: 3s;
+        }
+
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+
+        .animation-delay-5000 {
+          animation-delay: 5s;
+        }
+
+        .animation-delay-6000 {
+          animation-delay: 6s;
+        }
+      `}</style>
+    </div>
   );
 };
 

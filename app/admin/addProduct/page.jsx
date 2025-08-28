@@ -1,116 +1,26 @@
-// "use client";
-// import { assets } from "@/Assests/assets";
-// import axios from "axios";
-// import Image from "next/image";
-// import React, { useState } from "react";
-// import { toast } from "react-toastify";
-
-// const page = () => {
-//   const [image, setImage] = useState(false);
-//   const [data, setData] = useState({
-//     title: "",
-//     description: "",
-//     category: "Startup",
-//     author: "Alex Bennet",
-//     authorImg: "/author_img.png",
-//   });
-
-//   const onChangeHandler = (event) => {
-//     const name = event.target.name;
-//     const value = event.target.value;
-//     setData((data) => ({ ...data, [name]: value }));
-//     console.log(data);
-//   };
-
-// const onSubmitHandler = async (e)=>{
-//  e.preventDefault();
-// const formData = new FormData();
-// formData.append('title',data.title);
-// formData.append('description',data.description);
-// formData.append('category',data.category);
-// formData.append('author',data.author);
-// formData.append('authorImg',data.authorImg);
-// formData.append('image',image);
-// const response = await axios.post('/api/blog',formData)
-//   if(response.data.success){
-//     toast.success(response.data.msg);
-//     setImage(false)
-//     setData({
-//         title: "",
-//         description: "",
-//         category: "Startup",
-//         author: "Alex Bennet",
-//         authorImg: "/author_img.png",
-//       })
-//   }else{
-//     toast.error("Error")
-//   }
-// }
-
-//   return (
-//     <>
-//       <form onSubmit={onSubmitHandler} className="pt-5 px-5 sm:pl-16 sm:pt-12">
-//         <p className="text-xl">Upload thumbnail</p>
-//         <label htmlFor="image">
-//           <Image
-//             className="mt-4"
-//             src={!image ? assets.upload_area : URL.createObjectURL(image)}
-//             width={140}
-//             height={70}
-//             alt=""
-//           />
-//         </label>
-//         <input
-//           onChange={(e) => setImage(e.target.files[0])}
-//           type="file"
-//           id="image"
-//           hidden
-//           required
-//         />
-//         <p className="text-xl mt-4">Blog Title</p>
-//         <input name="title" onChange={onChangeHandler} value={data.title}
-//           className="w-full sm:w-[500px] mt-4 px-4 py-3 border"
-//           type="text"
-//           placeholder="Type here"
-//           required
-//         />
-//         <p className="text-xl mt-4">Blog Description</p>
-//         <textarea name="description" onChange={onChangeHandler} value={data.description}
-//           className="w-full sm:w-[500px] mt-4 px-4 py-3 border"
-//           type="text"
-//           placeholder="Write content here."
-//           rows={6}
-//           required
-//         />
-//         <p className="text-xl mt-4">Blog Category</p>
-//         <select
-//           name="category" onChange={onChangeHandler} value={data.category}
-//           className="w-40 mt-4 px-4 py-3 border text-gray-500"
-//         >
-//           <option value={"Startup"}>Startup</option>
-//           <option value={"Technology"}>Technology</option>
-//           <option value={"Lifestyle"}>Lifestyle</option>
-//         </select>
-//         <br />
-//         <button type="submit" className="mt-8 w-40 h-12 bg-black text-white">
-//           ADD
-//         </button>
-//       </form>
-//     </>
-//   );
-// };
-
-// export default page;
-
 "use client";
 import { assets } from "@/Assests/assets";
 import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import dynamic from "next/dynamic";
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-40 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
+      Loading editor...
+    </div>
+  ),
+});
+
+import "react-quill-new/dist/quill.snow.css";
 
 const page = () => {
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -119,39 +29,171 @@ const page = () => {
     authorImg: "/health_expert.png",
   });
 
+  // Regular input handler for text inputs and selects
   const onChangeHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setData((data) => ({ ...data, [name]: value }));
-    console.log(data);
+    setData((prevData) => ({ ...prevData, [name]: value }));
+    console.log("Updated data:", { ...data, [name]: value });
+  };
+
+  // Special handler for ReactQuill
+  const onDescriptionChange = (value) => {
+    setData((prevData) => ({ ...prevData, description: value }));
+    console.log("Updated description:", value);
   };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("category", data.category);
-    formData.append("author", data.author);
-    formData.append("authorImg", data.authorImg);
-    formData.append("image", image);
 
-    const response = await axios.post("/api/blog", formData);
+    // Validation
+    if (!image) {
+      toast.error("Please select an image");
+      return;
+    }
 
-    if (response.data.success) {
-      toast.success(response.data.msg);
-      setImage(false);
-      setData({
-        title: "",
-        description: "",
-        category: "Sexual Health",
-        author: "Dr. Sarah Johnson",
-        authorImg: "/health_expert.png",
+    if (!data.title.trim()) {
+      toast.error("Please enter a title");
+      return;
+    }
+
+    if (!data.description.trim() || data.description === "<p><br></p>") {
+      toast.error("Please enter article content");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("title", data.title.trim());
+      formData.append("description", data.description.trim());
+      formData.append("category", data.category);
+      formData.append("author", data.author.trim());
+      formData.append("authorImg", data.authorImg);
+      formData.append("image", image);
+
+      // Debug: Log form data contents
+      console.log("Form data being sent:");
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await axios.post("/api/blog", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: 30000, // 30 seconds timeout
       });
-    } else {
-      toast.error("Error");
+
+      if (response.data.success) {
+        toast.success(response.data.msg || "Article published successfully!");
+
+        // Reset form
+        setImage(null);
+        setData({
+          title: "",
+          description: "",
+          category: "Sexual Health",
+          author: "Dr. Sarah Johnson",
+          authorImg: "/health_expert.png",
+        });
+
+        // Reset file input
+        const fileInput = document.getElementById("image");
+        if (fileInput) {
+          fileInput.value = "";
+        }
+      } else {
+        toast.error(response.data.msg || "Failed to publish article");
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+
+      if (error.response) {
+        // Server responded with error status
+        console.error("Error response:", error.response.data);
+        console.error("Error status:", error.response.status);
+
+        const errorMsg =
+          error.response.data?.message ||
+          error.response.data?.error ||
+          `Server error: ${error.response.status}`;
+        toast.error(errorMsg);
+      } else if (error.request) {
+        // Network error
+        console.error("Network error:", error.request);
+        toast.error("Network error. Please check your connection.");
+      } else {
+        // Other error
+        console.error("Error:", error.message);
+        toast.error("An unexpected error occurred");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image size should be less than 5MB");
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Please upload a valid image file (JPG, PNG, or WebP)");
+        return;
+      }
+
+      setImage(file);
+    }
+  };
+
+  // ReactQuill modules configuration
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image", "video"],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }],
+      ["code-block"],
+      ["clean"],
+    ],
+  };
+
+  const quillFormats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "indent",
+    "link",
+    "image",
+    "video",
+    "color",
+    "background",
+    "align",
+    "code-block",
+  ];
 
   return (
     <div className="flex-1 pt-5 px-5 sm:pt-12 sm:pl-16 bg-gradient-to-br from-blue-50 to-green-50 min-h-screen">
@@ -216,12 +258,11 @@ const page = () => {
                     )}
                   </label>
                   <input
-                    onChange={(e) => setImage(e.target.files[0])}
+                    onChange={handleImageChange}
                     type="file"
                     id="image"
                     hidden
-                    required
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp"
                   />
                 </div>
                 <div className="flex-1">
@@ -251,22 +292,28 @@ const page = () => {
                 type="text"
                 placeholder="Enter compelling article title..."
                 required
+                disabled={isSubmitting}
               />
             </div>
 
-            {/* Article Description */}
+            {/* Article Description with ReactQuill */}
             <div className="space-y-2">
               <label className="block text-lg font-semibold text-gray-700">
                 Article Content <span className="text-red-500">*</span>
               </label>
-              <textarea
-                name="description"
-                onChange={onChangeHandler}
-                value={data.description}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 min-h-[200px] resize-vertical"
-                placeholder="Write your health article content here. Include valuable insights, tips, and evidence-based information..."
-                required
-              />
+              <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200">
+                <ReactQuill
+                  theme="snow"
+                  value={data.description}
+                  onChange={onDescriptionChange}
+                  modules={quillModules}
+                  formats={quillFormats}
+                  placeholder="Write your health article content here. Include valuable insights, tips, and evidence-based information..."
+                  style={{
+                    minHeight: "200px",
+                  }}
+                />
+              </div>
               <p className="text-sm text-gray-500">
                 Tip: Use clear headings, bullet points, and cite credible
                 sources for better readability.
@@ -285,6 +332,7 @@ const page = () => {
                   onChange={onChangeHandler}
                   value={data.category}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                  disabled={isSubmitting}
                 >
                   <option value="Sexual Health">Sexual Health</option>
                   <option value="Men's Performance">Men's Performance</option>
@@ -308,6 +356,7 @@ const page = () => {
                   type="text"
                   placeholder="Enter author name..."
                   required
+                  disabled={isSubmitting}
                 />
               </div>
             </div>
@@ -331,9 +380,39 @@ const page = () => {
 
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-700 hover:to-green-700 transform hover:scale-105 transition-all duration-200 focus:ring-4 focus:ring-blue-300"
+                disabled={isSubmitting}
+                className={`px-8 py-3 text-white font-semibold rounded-lg shadow-lg transform transition-all duration-200 focus:ring-4 focus:ring-blue-300 ${
+                  isSubmitting
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 hover:scale-105"
+                }`}
               >
-                Publish Article
+                {isSubmitting ? (
+                  <div className="flex items-center space-x-2">
+                    <svg
+                      className="animate-spin h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    <span>Publishing...</span>
+                  </div>
+                ) : (
+                  "Publish Article"
+                )}
               </button>
             </div>
           </form>

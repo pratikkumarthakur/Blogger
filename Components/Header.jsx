@@ -15,8 +15,8 @@ function Header() {
   const carouselImages = [
     "/sex_health.jpg", // Replace with your actual image names
     "/mens_performance.jpg",
-    "/women's vitality.jpg",
-    "/art of intimacy.jpg",
+    "/womens_vitality.jpg",
+    "/art_of_intimacy.jpg",
   ];
 
   // Handle scroll effect for navbar
@@ -93,7 +93,7 @@ function Header() {
             <Image
               src={assets.logo}
               width={120}
-              alt="Wellness Hub"
+              alt="KAMCHARCHA"
               className="w-[100px] sm:w-[120px] cursor-pointer"
               onClick={() => scrollToSection("home")}
             />
@@ -108,28 +108,28 @@ function Header() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("sexual-health")}
+                onClick={() => scrollToSection("Sexual Health")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Sexual Health
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("mens-performance")}
+                onClick={() => scrollToSection("Men's Performance")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Men's Performance
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("womens-vitality")}
+                onClick={() => scrollToSection("Women's Vitality")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Women's Vitality
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("art-of-intimacy")}
+                onClick={() => scrollToSection("Art of Intimacy")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Art of Intimacy
@@ -192,7 +192,7 @@ function Header() {
                 Home
               </button>
               <button
-                onClick={() => scrollToSection("sexual-health")}
+                onClick={() => scrollToSection("Sexual Health")}
                 className="block w-full text-left py-3 px-4 hover:bg-gray-50 rounded-lg transition-colors font-medium"
               >
                 Sexual Health
@@ -248,7 +248,7 @@ function Header() {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-medium mb-8 animate-fade-in">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></div>
-                Trusted by 2M+ members worldwide
+                Trusted by All members
               </div>
 
               {/* Main Heading and Tagline - Now positioned ABOVE the image */}
@@ -269,15 +269,16 @@ function Header() {
               </div>
 
               {/* Image Carousel Section - Now positioned BELOW the tagline */}
-              <div className="relative max-w-4xl mx-auto mb-12">
+              <div className="relative max-w-[70%] mx-auto mb-12">
                 {/* Main Image Container */}
-                <div className="relative h-64 sm:h-80 md:h-96 lg:h-[28rem] overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200">
+                <div className="relative h-64 sm:h-80 md:h-96 lg:h-[40rem] overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200 ">
                   <Image
                     src={carouselImages[currentImageIndex]}
                     alt={`Wellness image ${currentImageIndex + 1}`}
-                    fill
                     className="object-cover transition-all duration-700 ease-in-out transform hover:scale-105"
                     priority={currentImageIndex === 0}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
 
                   {/* Overlay gradient */}
