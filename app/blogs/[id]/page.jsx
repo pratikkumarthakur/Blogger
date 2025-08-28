@@ -1,241 +1,471 @@
-// "use client";
-// import { assets, blog_data } from "@/Assests/assets";
-// import Footer from "@/Components/Footer";
-// import axios from "axios";
-
-// import Image from "next/image";
-// import Link from "next/link";
-// import React, { useEffect, useState } from "react";
-
-// const page = ({ params }) => {
-//   const [data, setData] = useState(null);
-
-//   const resolvedParams = React.use(params);
-
-//   const fetchBlogData = async () => {
-//     const response = await axios.get("/api/blog", {
-//       params: {
-//         id: resolvedParams.id,
-//       },
-//     });
-//     setData(response.data.blog);
-//   };
-
-//   useEffect(() => {
-//     fetchBlogData();
-//   }, []);
-
-//   return data ? (
-//     <>
-//       <div className="bg-gray-200 py-5 px-5 md:px-12 lg:px-28 ">
-//         <div className="flex justify-between items-center">
-//           <Link href="/">
-//             <Image
-//               src={assets.logo}
-//               width={280}
-//               alt=""
-//               className="w-[230px] sm:w-auto"
-//               priority
-//             />
-//           </Link>
-//           <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000]">
-//             Get Started <Image src={assets.arrow} alt="" />
-//           </button>
-//         </div>
-
-//         <div className="text-center my-24 ">
-//           <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto ">
-//             {" "}
-//             {data.title}
-//           </h1>
-
-//           {/* FIX THE ERROR */}
-//           {/*
-//           <Image
-
-//             className="mx-auto mt-6 border border-white rounded-full"
-//             src={data.authorImg}
-//             width={60}
-//             height={60}
-//             alt=""
-//           /> */}
-//           {data.authorImg && (
-//             <Image
-//               className="mx-auto mt-6 border border-white rounded-full"
-//               src={data.authorImg}
-//               width={60}
-//               height={60}
-//               alt=""
-//             />
-//           )}
-
-//           <p className="mt-1 pb-2 text-lg max-w-[740px] mx-auto">
-//             {data.author}
-//           </p>
-//         </div>
-//       </div>
-//       <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
-//         <Image
-//           className="border-4 border-white"
-//           src={data.image}
-//           width={1280}
-//           height={720}
-//           alt=""
-//         />
-
-//        <div className="blog-content" dangerouslySetInnerHTML={{__html:data.description}}>
-
-//        </div>
-
-//         <div className="my-24">
-//           <p className="text-black font- font-semibold my-4">
-//             Share this article on Social Media
-//           </p>
-//           <div className="flex">
-//             <Image src={assets.facebook_icon} width={50} alt="" />
-//             <Image src={assets.twitter_icon} width={50} alt="" />
-//             <Image src={assets.googleplus_icon} width={50} alt="" />
-//           </div>
-//         </div>
-//       </div>
-//       <Footer />
-//     </>
-//   ) : (
-//     <></>
-//   );
-// };
-
-// export default page;
-
 "use client";
-import { assets } from "@/Assests/assets";
+
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { assets, blog_data } from "@/Assests/assets";
 import Footer from "@/Components/Footer";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const page = ({ params }) => {
+const BlogPage = () => {
+  const { id } = useParams();
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [imageError, setImageError] = useState(false);
 
-  const resolvedParams = React.use(params); // Unwrap the params Promise
-
-  const fetchBlogData = async () => {
-    if (!resolvedParams?.id) return;
-    const response = await axios.get("/api/blog", {
-      params: {
-        id: resolvedParams.id,
-      },
-    });
-    setData(response.data.blog);
+  // Color mapping for categories
+  const getCategoryColor = (category) => {
+    const colorMap = {
+      Technology: "bg-blue-500",
+      Lifestyle: "bg-green-500",
+      Travel: "bg-purple-500",
+      "Food & Recipes": "bg-orange-500",
+      Business: "bg-gray-700",
+      "Health & Fitness": "bg-red-400",
+      Education: "bg-indigo-500",
+      Entertainment: "bg-pink-500",
+      Finance: "bg-emerald-600",
+      Sports: "bg-yellow-600",
+      default: "bg-gray-700",
+    };
+    return colorMap[category] || colorMap.default;
   };
 
   useEffect(() => {
-    fetchBlogData();
-    // eslint-disable-next-line
-  }, [resolvedParams?.id]);
+    const fetchBlogData = async () => {
+      if (!id) {
+        setError("No blog ID provided");
+        setLoading(false);
+        return;
+      }
 
-  const handleScroll = () => {
-    window.scrollTo({
-      top: window.innerHeight / 2,
-      behavior: "smooth",
-    });
+      try {
+        console.log("Fetching blog with ID:", id);
+
+        // Try API first
+        const response = await axios.get("/api/blog", {
+          params: { id: id },
+        });
+
+        console.log("API Response:", response.data);
+
+        if (response.data.success && response.data.blog) {
+          setData(response.data.blog);
+          console.log("Blog data set:", response.data.blog);
+        } else {
+          throw new Error(response.data.error || "Blog not found in API");
+        }
+      } catch (err) {
+        console.error("API Error:", err);
+
+        // Fallback to static data
+        console.log("Trying fallback to static data...");
+        const staticBlog = blog_data.find(
+          (item) => item.id === id || item.id === parseInt(id)
+        );
+
+        if (staticBlog) {
+          setData(staticBlog);
+          setError(null);
+          console.log("Using static blog data:", staticBlog);
+        } else {
+          console.error("Blog not found in static data either");
+          if (err.response?.status === 404) {
+            setError("Blog post not found");
+          } else if (err.response?.data?.error) {
+            setError(err.response.data.error);
+          } else {
+            setError("Failed to load blog post");
+          }
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogData();
+  }, [id]);
+
+  // Handle image error
+  const handleImageError = (e) => {
+    console.error("Image failed to load:", data?.image);
+    setImageError(true);
   };
 
-  return data ? (
+  // Debug data structure
+  useEffect(() => {
+    if (data) {
+      console.log("Blog data debug:", {
+        title: data.title,
+        readingTime: data.readingTime,
+        views: data.views,
+        tags: data.tags,
+        allKeys: Object.keys(data),
+        fullData: data,
+      });
+    }
+  }, [data]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">Loading article...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="mb-4">
+            <svg
+              className="mx-auto h-16 w-16 text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-red-600 mb-4">
+            Oops! Something went wrong
+          </h1>
+          <p className="text-lg text-gray-600 mb-6">{error}</p>
+          <Link
+            href="/"
+            className="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // No data state
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="mb-4">
+            <svg
+              className="mx-auto h-16 w-16 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Article not found
+          </h1>
+          <p className="text-gray-600 mb-6">
+            The article you're looking for doesn't exist or has been removed.
+          </p>
+          <Link
+            href="/"
+            className="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <>
-      <div className="bg-gradient-to-b from-gray-100 to-gray-300 py-8 px-4 md:px-12 lg:px-32 min-h-[40vh] shadow-lg">
+      {/* Header Section */}
+      <div className="bg-gray-200 px-5 md:px-12 lg:px-28">
         <div className="flex justify-between items-center">
           <Link href="/">
             <Image
               src={assets.logo}
-              width={280}
-              alt=""
-              className="w-[230px] sm:w-auto"
+              width={100}
+              height={100}
+              alt="Logo"
+              className="w-[100px] sm:w-[100px] mt-[15px]"
               priority
             />
           </Link>
-          <button
-            onClick={handleScroll}
-            className="flex items-center gap-2 font-semibold py-2 px-5 rounded-lg border border-black bg-white shadow-md hover:bg-black hover:text-white transition "
-          >
-            Get Started <Image src={assets.arrow} alt="Arrow" />
+
+          <button className="flex items-center gap-2 font-medium py-1 px-3 sm:py-3 sm:px-6 border border-black shadow-[-7px_7px_0px_#000000] hover:shadow-[-5px_5px_0px_#000000] transition-all">
+            Get Started
+            <Image src={assets.arrow} width={16} height={16} alt="Arrow" />
           </button>
         </div>
 
-        <div className="text-center my-24 ">
-          <h1 className="text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto ">
-            {" "}
-            {data.title}
+        <div className="text-center my-16">
+          <h1 className="text-2xl sm:text-4xl font-semibold max-w-[700px] mx-auto leading-tight">
+            {data?.title || "Blog Title"}
           </h1>
-          {data.authorImg && (
-            <Image
-              className="mx-auto mt-6 border border-white rounded-full"
-              src={data.authorImg}
-              width={60}
-              height={60}
-              alt=""
-            />
-          )}
-          <p className="mt-2 pb-2 text-lg text-gray-700 font-medium max-w-[740px] mx-auto">
-            {data.author}
-          </p>
+
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-gray-600 mb-10">
+            <p className="text-lg">
+              By{" "}
+              <span className="font-medium text-gray-800">
+                {data?.author || "Unknown Author"}
+              </span>
+            </p>
+
+            {(data?.createdAt || data?.date) && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="hidden sm:inline">•</span>
+                <span>
+                  {new Date(data.createdAt || data.date).toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    }
+                  )}
+                </span>
+              </div>
+            )}
+
+            {(data?.readingTime || data?.readTime) && (
+              <>
+                <span className="hidden sm:inline">•</span>
+                <p className="text-sm">
+                  {data.readingTime || data.readTime} min read
+                </p>
+              </>
+            )}
+
+            {data?.views !== undefined && data?.views !== null && (
+              <>
+                <span className="hidden sm:inline">•</span>
+                <p className="text-sm">
+                  {data.views} {data.views === 1 ? "view" : "views"}
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
-      <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
-        <Image
-          className="border-4 border-white"
-          src={data.image}
-          width={1280}
-          height={720}
-          alt=""
-        />
 
-        <div
-          className="blog-content"
-          dangerouslySetInnerHTML={{ __html: data.description }}
-        ></div>
+      {/* Main Content */}
+      <div className="mx-5 max-w-[600px] md:mx-auto mt-[80px] mb-10">
+        {/* Featured Image */}
+        {data.image && !imageError ? (
+          <div className="relative mb-8">
+            <Image
+              className="border-4 border-white rounded-lg shadow-lg w-full"
+              src={data.image}
+              width={800}
+              height={400}
+              alt={data.title || "Blog image"}
+              priority
+              onError={handleImageError}
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        ) : (
+          // Fallback image placeholder
+          <div className="border-4 border-white bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg shadow-lg flex items-center justify-center mb-8 h-[400px]">
+            <div className="text-center text-gray-500">
+              <svg
+                className="mx-auto h-16 w-16 mb-4"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p className="text-sm">Image not available</p>
+            </div>
+          </div>
+        )}
 
-        <div className="my-16">
-          <p className="text-gray-800 font-semibold mb-4 text-lg">
-            Share this article on Social Media
+        {/* Article Content */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
+          {data.category && (
+            <div className="mb-6">
+              <span
+                className={`${getCategoryColor(
+                  data.category
+                )} text-white px-4 py-2 rounded-full text-sm font-medium uppercase tracking-wide`}
+              >
+                {data.category}
+              </span>
+            </div>
+          )}
+
+          {data.description || data.content ? (
+            <div
+              className="blog-content prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
+              dangerouslySetInnerHTML={{
+                __html: data.description || data.content,
+              }}
+            />
+          ) : (
+            <div className="blog-content prose prose-lg max-w-none">
+              <p className="text-gray-500 italic text-center py-8">
+                No content available for this article.
+              </p>
+            </div>
+          )}
+
+          {/* Tags */}
+          {data.tags && Array.isArray(data.tags) && data.tags.length > 0 && (
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">
+                Tags:
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {data.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-colors cursor-pointer"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Social Share */}
+        <div className="my-16 text-center">
+          <p className="text-black font-semibold mb-6 text-lg">
+            Share this article
           </p>
-          <div className="flex gap-6">
-            <a href="#" aria-label="Share on Facebook">
+          <div className="flex justify-center gap-4">
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                typeof window !== "undefined" ? window.location.href : ""
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer hover:scale-110 transition-transform block"
+            >
               <Image
                 src={assets.facebook_icon}
                 width={50}
-                alt="Facebook"
-                className="hover:scale-110 transition-transform duration-200"
+                height={50}
+                alt="Share on Facebook"
+                className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
               />
             </a>
-            <a href="#" aria-label="Share on Twitter">
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                data?.title || "Check out this article"
+              )}&url=${encodeURIComponent(
+                typeof window !== "undefined" ? window.location.href : ""
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer hover:scale-110 transition-transform block"
+            >
               <Image
                 src={assets.twitter_icon}
                 width={50}
-                alt="Twitter"
-                className="hover:scale-110 transition-transform duration-200"
+                height={50}
+                alt="Share on Twitter"
+                className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
               />
             </a>
-            <a href="#" aria-label="Share on Google Plus">
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                typeof window !== "undefined" ? window.location.href : ""
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer hover:scale-110 transition-transform block"
+            >
               <Image
                 src={assets.googleplus_icon}
                 width={50}
-                alt="Google Plus"
-                className="hover:scale-110 transition-transform duration-200"
+                height={50}
+                alt="Share on LinkedIn"
+                className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
               />
             </a>
+          </div>
+
+          {/* Copy URL Button */}
+          <div className="mt-6">
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert("Article URL copied to clipboard!");
+                }
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm font-medium"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+              Copy Link
+            </button>
           </div>
         </div>
       </div>
 
       <Footer />
     </>
-  ) : (
-    <div className="flex justify-center items-center min-h-[60vh]">
-      <span className="text-gray-500 text-lg">Loading...</span>
-    </div>
   );
 };
 
-export default page;
+export default BlogPage;
