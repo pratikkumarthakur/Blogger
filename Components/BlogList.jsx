@@ -95,6 +95,7 @@ const BlogList = ({ title, description, category, image, id }) => {
                   title={item.title}
                   description={item.description}
                   category={item.category}
+                  
                 />
               </div>
             ))}
