@@ -9,6 +9,15 @@ function Header() {
   const [email, setEmail] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Array of images from public folder - update these paths according to your actual image names
+  const carouselImages = [
+    "/sex_health.jpg", // Replace with your actual image names
+    "/mens_performance.jpg",
+    "/womens_vitality.jpg",
+    "/art_of_intimacy.jpg",
+  ];
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -18,6 +27,16 @@ function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Auto-advance carousel every 5 seconds (optional)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -39,7 +58,24 @@ function Header() {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-    setIsMobileMenuOpen(false); // Close mobile menu after clicking
+    setIsMobileMenuOpen(false);
+  };
+
+  // Navigation functions for carousel
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToImage = (index) => {
+    setCurrentImageIndex(index);
   };
 
   return (
@@ -57,7 +93,7 @@ function Header() {
             <Image
               src={assets.logo}
               width={120}
-              alt="Wellness Hub"
+              alt="KAMCHARCHA"
               className="w-[100px] sm:w-[120px] cursor-pointer"
               onClick={() => scrollToSection("home")}
             />
@@ -72,28 +108,28 @@ function Header() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("sexual-health")}
+                onClick={() => scrollToSection("Sexual Health")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Sexual Health
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("mens-performance")}
+                onClick={() => scrollToSection("Men's Performance")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Men's Performance
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("womens-vitality")}
+                onClick={() => scrollToSection("Women's Vitality")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Women's Vitality
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
               <button
-                onClick={() => scrollToSection("art-of-intimacy")}
+                onClick={() => scrollToSection("Art of Intimacy")}
                 className="relative hover:text-blue-600 transition-colors cursor-pointer group"
               >
                 Art of Intimacy
@@ -156,7 +192,7 @@ function Header() {
                 Home
               </button>
               <button
-                onClick={() => scrollToSection("sexual-health")}
+                onClick={() => scrollToSection("Sexual Health")}
                 className="block w-full text-left py-3 px-4 hover:bg-gray-50 rounded-lg transition-colors font-medium"
               >
                 Sexual Health
@@ -210,72 +246,154 @@ function Header() {
 
             <div className="relative z-10">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-medium mb-6 animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-medium mb-8 animate-fade-in">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></div>
-                Trusted by 2M+ members worldwide
+                Trusted by All members
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                Better wellness,
-                <br />
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
-                  we got you
-                </span>
-              </h1>
+              {/* Main Heading and Tagline - Now positioned ABOVE the image */}
+              <div className="mb-12">
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                  Better wellness,
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
+                    we got you
+                  </span>
+                </h1>
 
-              <p className="mt-6 max-w-[650px] mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed opacity-90">
-                Expert guidance and premium solutions for your health and
-                intimacy journey. Discreet, professional, and tailored for your
-                needs.
-              </p>
-
-              {/* Trust Indicators with enhanced styling */}
-              <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-12 text-sm text-gray-600">
-                <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow-sm border border-gray-100">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  2,000,000+ members treated
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow-sm border border-gray-100">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  Free and discreet shipping
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow-sm border border-gray-100">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  100% online process
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow-sm border border-gray-100">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  No insurance required
-                </div>
-              </div>
-
-              {/* Enhanced Newsletter Signup */}
-              <div className="mt-16 max-w-[500px] mx-auto">
-                <h3 className="text-lg font-semibold mb-4 text-gray-800">
-                  Get personalized health tips
-                </h3>
-                <form
-                  onSubmit={onSubmitHandler}
-                  className="relative flex bg-white border-2 border-gray-200 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/20"
-                >
-                  <input
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="flex-1 px-6 py-4 sm:py-5 outline-none text-gray-700 placeholder-gray-400 text-base"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-4 sm:py-5 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-                <p className="text-xs text-gray-500 mt-3 text-center">
-                  No spam, unsubscribe at any time. Your privacy is protected.
+                <p className="mt-6 max-w-[650px] mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed opacity-90">
+                  Expert guidance and premium solutions for your health and
+                  intimacy journey. Discreet, professional, and tailored for
+                  your needs.
                 </p>
+              </div>
+
+              {/* Image Carousel Section - Now positioned BELOW the tagline */}
+              <div className="relative max-w-[70%] mx-auto mb-12">
+                {/* Main Image Container */}
+                <div className="relative h-64 sm:h-80 md:h-96 lg:h-[40rem] overflow-hidden rounded-2xl shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200 ">
+                  <Image
+                    src={carouselImages[currentImageIndex]}
+                    alt={`Wellness image ${currentImageIndex + 1}`}
+                    className="object-cover transition-all duration-700 ease-in-out transform hover:scale-105"
+                    priority={currentImageIndex === 0}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+
+                  {/* Navigation Arrows */}
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm group"
+                  >
+                    <svg
+                      className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm group"
+                  >
+                    <svg
+                      className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* Image Counter */}
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 text-white text-sm rounded-full backdrop-blur-sm">
+                    {currentImageIndex + 1} / {carouselImages.length}
+                  </div>
+                </div>
+
+                {/* Dot Indicators */}
+                <div className="flex justify-center gap-3 mt-6">
+                  {carouselImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToImage(index)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex
+                          ? "bg-blue-600 scale-125 shadow-lg"
+                          : "bg-gray-300 hover:bg-gray-400"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Thumbnail Navigation (optional - for larger screens) */}
+                <div className="hidden md:flex justify-center gap-4 mt-6">
+                  {carouselImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToImage(index)}
+                      className={`relative w-20 h-16 rounded-lg overflow-hidden transition-all duration-300 ${
+                        index === currentImageIndex
+                          ? "ring-4 ring-blue-500 shadow-lg scale-105"
+                          : "opacity-70 hover:opacity-100 hover:scale-105"
+                      }`}
+                    >
+                      <Image
+                        src={image}
+                        alt={`Thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Enhanced Newsletter Signup */}
+                <div className="mt-16 max-w-[500px] mx-auto">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800">
+                    Get personalized health tips
+                  </h3>
+                  <form
+                    onSubmit={onSubmitHandler}
+                    className="relative flex bg-white border-2 border-gray-200 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/20"
+                  >
+                    <input
+                      onChange={(e) => setEmail(e.target.value)}
+                      value={email}
+                      type="email"
+                      placeholder="Enter your email address"
+                      className="flex-1 px-6 py-4 sm:py-5 outline-none text-gray-700 placeholder-gray-400 text-base"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-4 sm:py-5 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold text-base shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+                    >
+                      Subscribe
+                    </button>
+                  </form>
+                  <p className="text-xs text-gray-500 mt-3 text-center">
+                    No spam, unsubscribe at any time. Your privacy is protected.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
